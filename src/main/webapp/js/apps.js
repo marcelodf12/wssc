@@ -203,9 +203,8 @@ Wssc.controller('compraAltaCtrl', function($scope, $http, $location) {
         $http.get(consulta)
                 .success(function(response) {
                     $scope.productos = response;
-                })
-    }
-
+                });
+    };
 
     $scope.alta = function() {
         var url = "webresources/pol.una.py.wssc.clientes/";
