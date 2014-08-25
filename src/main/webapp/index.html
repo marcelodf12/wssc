@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html ng-app="Wssc"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="angular/angular.min.js"></script>
+        <script src="js/apps.js"></script>
+        <script src="angular/angular-route.js"></script>
+
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- Header -->
+                    <h1>Web System Stock Control</h1>
+                    <h2> Programacion Web</h2>
+                    <!-- End-Header -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- Menu-Superior	-->
+                    <nav class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                                <span class="sr-only">Cambiar navegacion</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Proveedores<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#/proveedor/alta">Nuevo</a></li>
+                                            <li><a href="#/proveedor/listar">Listar</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Productos<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#/producto/alta">Nuevo</a></li>
+                                            <li><a href="#/producto/listar">Listar</a></li>
+                                        </ul>
+                                    </li>
+
+
+                                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Clientes<b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#/cliente/alta">Nuevo</a></li>
+                                            <li><a href="#/cliente/listar">Listar</a></li>
+                                        </ul>
+                                    </li>							
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                    <!-- End-Menu-Superior	-->
+                </div>
+            </div>
+            <div class="row">			
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <!-- Menu-Lateral	-->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Movimientos</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#/movimientos/compras/registrar">Registrar Compra</a></li>
+                                <li><a href="#/movimientos/ventas/registrar">Registrar Venta</a></li>
+                                <li><a href="#">Listar Compras</a></li>
+                                <li><a href="#">Listar Ventas</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- End-Menu-Lateral	-->
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <!-- Contenido	-->
+                    <div ng-view="">
+
+                    </div>
+                    <!-- End-Contenido	-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- Pie	-->
+
+                    <!-- End-Pie	-->
+                </div>
+            </div>
+        </div>
+
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.js"></script>
+        <script src="js/main.js"></script>
+
+    </body>
+</html>
