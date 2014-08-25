@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Productos.findByDescripcion", query = "SELECT p FROM Productos p WHERE p.descripcion = :descripcion"),
     @NamedQuery(name = "Productos.findByPrecio", query = "SELECT p FROM Productos p WHERE p.precio = :precio")})
 public class Productos implements Serializable {
+    @Column(name = "stock")
+    private Integer stock;
     @JoinTable(name = "proveedor_producto", joinColumns = {
         @JoinColumn(name = "fk_producto", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "fk_proveedor", referencedColumnName = "id")})
@@ -152,6 +154,14 @@ public class Productos implements Serializable {
 
     public void setProveedoresCollection(Collection<Proveedores> proveedoresCollection) {
         this.proveedoresCollection = proveedoresCollection;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
     
 }
