@@ -324,8 +324,8 @@ Wssc.controller('compraAltaCtrl', function($scope, $http, $location) {
                             'descripcion':productos[i].descripcion,
                             'nombre':productos[i].nombre,
                             'precio':productos[i].precio,
-                            'stock':productos[i].stock,
-                        }
+                            'stock':productos[i].stock
+                        };
                         console.log("se crear");
                         console.log("webresources/pol.una.py.wssc.productos/"+productos[i].id);
                         console.log(pro);
