@@ -75,8 +75,8 @@ Wssc.config(['$routeProvider', function($routeProvider) {
                     templateUrl: 'movimientos/registrar_venta.html',
                     controller: 'MainController'
                 })
-                
-                
+
+
 
 
                 .otherwise({RedirectTo: '/'});
@@ -218,7 +218,7 @@ Wssc.controller('productoListarCtrl', function($scope, $http) {
     $http.get("webresources/pol.una.py.wssc.productos/")
             .success(function(response) {
                 $scope.productos = response;
-        
+
             });
 });
 Wssc.controller('productoEliminarCtrl', function($scope, $http, $routeParams, $location) {
@@ -241,18 +241,18 @@ Wssc.controller('productoEditarCtrl', function($scope, $http, $routeParams, $loc
     var url = "webresources/pol.una.py.wssc.productos/";
     var id = $routeParams.id.toString();
     $http.get(url + id).success(function(response) {
-        
-        producto = response;        
-        $scope.nombre = producto.nombre;        
+
+        producto = response;
+        $scope.nombre = producto.nombre;
         $scope.descripcion = producto.descripcion;
         $scope.precio = producto.precio;
-        
+
     });
     $scope.editar = function() {
-        newProducto = {id: $routeParams.id, nombre: $scope.nombre, descripcion: $scope.descripcion , precio: $scope.precio};
-        console.log(url);        
+        newProducto = {id: $routeParams.id, nombre: $scope.nombre, descripcion: $scope.descripcion, precio: $scope.precio};
+        console.log(url);
         console.log(newProducto);
-        $http.put(url+id, newProducto);
+        $http.put(url + id, newProducto);
         $location.path('/');
     };
 });
@@ -288,7 +288,7 @@ Wssc.controller('compraAltaCtrl', function($scope, $http, $location) {
     };
 
     $scope.alta = function() {
-        var url = "webresources/pol.una.py.wssc.compras/";
+        var url = "webresources/pol.una.py.wssc.compras/crear";
         var f = new Date();
         var ano = f.getFullYear();
         var mes = f.getMonth();
@@ -297,26 +297,45 @@ Wssc.controller('compraAltaCtrl', function($scope, $http, $location) {
             "fecha": ano + "-" + mes + "-" + dia,
             "fkProveedor": proveedor
         };
-        for (var i = 0; i < cant_p; i++) {
-            id = productos[i].id;
-            if (typeof ($scope.cantidad[id]) !== 'undefined') {
-                if ($scope.cantidad[id].valueOf() !== 0) {
-                    if (productos[i].stock >= $scope.cantidad[id]) {
+        var compra_respuesta;
+        $http.post(url, compra).success(function(response) {
+            console.log("Respuesta");
+            console.log(response);
+            compra_respuesta = response;
+            for (var i = 0; i < cant_p; i++) {
+                id = productos[i].id;
+                if (typeof ($scope.cantidad[id]) !== 'undefined') {
+                    if ($scope.cantidad[id].valueOf() !== 0) {
                         nuevoDetalleCompra = {
                             "cantidad": parseInt($scope.cantidad[id]),
                             "fkProducto": productos[i],
                             "precio": productos[i].precio,
-                            "fkCompra":compra
+                            "fkCompra": compra_respuesta
                         };
-                    console.log(nuevoDetalleCompra);
-                    dir = "webresources/pol.una.py.wssc.detallecompra/";
-                    $http.post(dir, nuevoDetalleCompra);
+                        dir = "webresources/pol.una.py.wssc.detallecompra/";
+                        console.log("Detalles");
+                        console.log(nuevoDetalleCompra);
+                        $http.post(dir, nuevoDetalleCompra);
+                        productos[i].stock =
+                                parseInt(productos[i].stock) +
+                                parseInt($scope.cantidad[id]);
+                        pro = {
+                            'id': productos[i].id,
+                            'descripcion':productos[i].descripcion,
+                            'nombre':productos[i].nombre,
+                            'precio':productos[i].precio,
+                            'stock':productos[i].stock,
+                        }
+                        console.log("se crear");
+                        console.log("webresources/pol.una.py.wssc.productos/"+productos[i].id);
+                        console.log(pro);
+                        $http.put("webresources/pol.una.py.wssc.productos/"+productos[i].id, productos[i]);
+                        $location.path('/');
                     }
                 }
             }
-        }
-        console.log(compra);
-        $http.post(url, compra);
+        });
+
     };
 });
 Wssc.controller('comprasListarCtrl', function($scope, $http) {
