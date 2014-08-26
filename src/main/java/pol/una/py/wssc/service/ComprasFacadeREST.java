@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import pol.una.py.wssc.Compras;
+import pol.una.py.wssc.DetalleCompra;
 
 /**
  *
@@ -41,6 +42,17 @@ public class ComprasFacadeREST extends AbstractFacade<Compras> {
         super.create(entity);
     }
 
+    @POST
+    @Path("crear")
+    @Consumes({"application/xml", "application/json"})
+    public Compras crear(Compras entity){
+        super.create(entity);
+        System.out.println("*****************");
+        System.out.println(entity.getId());
+        System.out.println("###################");
+        return(entity);
+    }
+    
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})

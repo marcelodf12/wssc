@@ -20,9 +20,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,15 +40,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Compras.findById", query = "SELECT c FROM Compras c WHERE c.id = :id"),
     @NamedQuery(name = "Compras.findByFecha", query = "SELECT c FROM Compras c WHERE c.fecha = :fecha")})
 public class Compras implements Serializable {
+    @Size(max = 2147483647)
+    @Column(name = "fecha")
+    private String fecha;
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @SequenceGenerator(name="seq_compra", sequenceName="seq_compra", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_compra")
     @Column(name = "id")
-    private Integer id;
-    @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private Integer id;  
     @JoinColumn(name = "fk_proveedor", referencedColumnName = "id")
     @ManyToOne
     private Proveedores fkProveedor;
@@ -63,17 +65,9 @@ public class Compras implements Serializable {
     public Integer getId() {
         return id;
     }
-
+    
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
     }
 
     public Proveedores getFkProveedor() {
@@ -116,6 +110,14 @@ public class Compras implements Serializable {
     @Override
     public String toString() {
         return "pol.una.py.wssc.Compras[ id=" + id + " ]";
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
     
 }
