@@ -18,6 +18,8 @@
                             <th>Id</th>
                             <th>Producto</th>
                             <th>Descripcion</th>
+                            <th>Precio</th>
+                            <th >Stock</th>
                             <th>Cantidad</th>
                         </tr>
                     </thead>
@@ -26,6 +28,12 @@
                             <td>{{p.id}}</td>
                             <td>{{p.nombre}}</td>
                             <td>{{p.descripcion}}</td>
+                            <td>
+                                <p ng-model="precio[p.id]">{{p.precio}}</p>
+                            </td>
+                            <td>
+                                <p ng-model="stock[p.id]">{{p.stock}}</p>
+                            </td>
                             <td>
                                 <input class="form-control" id="inputCantidad" placeholder="Cantidad" type="text" ng-model="cantidad[p.id]">
                             </td>

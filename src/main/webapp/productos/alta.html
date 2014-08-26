@@ -9,23 +9,28 @@
                 <div class="form-group">
                     <label for="inputNombre" class="col-lg-2 control-label">Nombre</label>
                     <div class="col-lg-10">
-                        <input class="form-control" id="inputNombre" placeholder="Nombre" type="text">
+                        <input class="form-control" id="inputNombre" placeholder="Nombre" type="text" ng-model="nombre">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputDescripcion" class="col-lg-2 control-label">Descripcion</label>
                     <div class="col-lg-10">
-                        <input class="form-control" id="inputEmail" placeholder="Descripcion" type="text">
+                        <input class="form-control" id="inputDescrpcion" placeholder="Descrpcion" type="text" ng-model="descripcion">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPrecio" class="col-lg-2 control-label">Precio</label>
+                    <div class="col-lg-10">
+                        <input class="form-control" id="inputPrecio" placeholder="Precio" type="text" value="{{precio}}" ng-model="precio">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
                         <button type="reset" class="btn btn-default">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Crear</button>
+                        <button class="btn btn-primary" ng-click="alta()">Crear</button>
                     </div>
                 </div>
             </fieldset>
         </form>
     </div>
 </div>
-

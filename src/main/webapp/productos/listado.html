@@ -12,14 +12,17 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>id</td>
+            <tbody>                                    
+                <tr ng-repeat="p in productos">
+                    <!--<td>id</td>
                     <td>Nombre</td>
-                    <td>Stock</td>
+                    <td>Stock</td>-->
+                    <td>{{p.id}}</td>
+                    <td>{{p.nombre}}</td>
+                    <td>{{p.stock}}</td>
                     <td>
-                        <a href="#/producto/modificar" class="btn btn-info">Editar</a>
-                        <a href="#/producto/eliminar" class="btn btn-danger">Eliminar</a>
+                        <a href="#/producto/modificar/{{p.id}}" class="btn btn-info">Editar</a>
+                        <a href="#/producto/eliminar/{{p.id}}" class="btn btn-danger">Eliminar</a>
                     </td>
                 </tr>
             </tbody>

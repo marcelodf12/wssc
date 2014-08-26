@@ -47,19 +47,19 @@ Wssc.config(['$routeProvider', function($routeProvider) {
 
                 .when('/producto/alta', {
                     templateUrl: 'productos/alta.html',
-                    controller: 'MainController'
+                    controller: 'productoAltaCtrl'
                 })
-                .when('/producto/modificar', {
+                .when('/producto/modificar/:id', {
                     templateUrl: 'productos/modificacion.html',
-                    controller: 'MainController'
+                    controller: 'productoEditarCtrl'
                 })
                 .when('/producto/listar', {
                     templateUrl: 'productos/listado.html',
-                    controller: 'MainController'
+                    controller: 'productoListarCtrl'
                 })
-                .when('/producto/eliminar', {
+                .when('/producto/eliminar/:id', {
                     templateUrl: 'productos/baja.html',
-                    controller: 'MainController'
+                    controller: 'productoEliminarCtrl'
                 })
 
 
@@ -195,6 +195,65 @@ Wssc.controller('proveedorEliminarCtrl', function($scope, $http, $routeParams, $
     };
     $scope.cancelar = function() {
         $location.path('/proveedor/listar/');
+    };
+});
+
+
+
+//CRUD para productos
+Wssc.controller('productoAltaCtrl', function($scope, $http, $location) {
+    $scope.alta = function() {
+        var url = "webresources/pol.una.py.wssc.productos/";
+        newProducto = {nombre: $scope.nombre, descripcion: $scope.descripcion, precio: $scope.precio};
+        console.log(newProducto);
+        $http.post(url, newProducto);
+        $location.path('/producto/listar');
+        $http.get(url)
+                .success(function(response) {
+                    $scope.productos = response;
+                });
+    };
+});
+Wssc.controller('productoListarCtrl', function($scope, $http) {
+    $http.get("webresources/pol.una.py.wssc.productos/")
+            .success(function(response) {
+                $scope.productos = response;
+        
+            });
+});
+Wssc.controller('productoEliminarCtrl', function($scope, $http, $routeParams, $location) {
+    var url = "webresources/pol.una.py.wssc.productos/";
+    var id = $routeParams.id.toString();
+    $http.get(url + id.toString()).success(function(response) {
+        producto = response;
+        $scope.nombre = producto.nombre;
+        $scope.id = producto.id;
+    });
+    $scope.eliminar = function() {
+        $http.delete(url + id);
+        $location.path('/');
+    };
+    $scope.cancelar = function() {
+        $location.path('/producto/listar/');
+    };
+});
+Wssc.controller('productoEditarCtrl', function($scope, $http, $routeParams, $location) {
+    var url = "webresources/pol.una.py.wssc.productos/";
+    var id = $routeParams.id.toString();
+    $http.get(url + id).success(function(response) {
+        
+        producto = response;        
+        $scope.nombre = producto.nombre;        
+        $scope.descripcion = producto.descripcion;
+        $scope.precio = producto.precio;
+        
+    });
+    $scope.editar = function() {
+        newProducto = {id: $routeParams.id, nombre: $scope.nombre, descripcion: $scope.descripcion , precio: $scope.precio};
+        console.log(url);        
+        console.log(newProducto);
+        $http.put(url+id, newProducto);
+        $location.path('/');
     };
 });
 
