@@ -73,7 +73,7 @@ Wssc.config(['$routeProvider', function($routeProvider) {
                 })
                 .when('/movimientos/ventas/registrar', {
                     templateUrl: 'movimientos/registrar_venta.html',
-                    controller: 'MainController'
+                    controller: 'ventaAltaCtrl'
                 })
 
 
@@ -321,15 +321,15 @@ Wssc.controller('compraAltaCtrl', function($scope, $http, $location) {
                                 parseInt($scope.cantidad[id]);
                         pro = {
                             'id': productos[i].id,
-                            'descripcion':productos[i].descripcion,
-                            'nombre':productos[i].nombre,
-                            'precio':productos[i].precio,
-                            'stock':productos[i].stock
+                            'descripcion': productos[i].descripcion,
+                            'nombre': productos[i].nombre,
+                            'precio': productos[i].precio,
+                            'stock': productos[i].stock
                         };
                         console.log("se crear");
-                        console.log("webresources/pol.una.py.wssc.productos/"+productos[i].id);
+                        console.log("webresources/pol.una.py.wssc.productos/" + productos[i].id);
                         console.log(pro);
-                        $http.put("webresources/pol.una.py.wssc.productos/"+productos[i].id, productos[i]);
+                        $http.put("webresources/pol.una.py.wssc.productos/" + productos[i].id, productos[i]);
                         $location.path('/');
                     }
                 }
@@ -343,4 +343,40 @@ Wssc.controller('comprasListarCtrl', function($scope, $http) {
             .success(function(response) {
                 $scope.compras = response;
             });
+});
+
+Wssc.controller('ventaAltaCtrl', function($scope, $http, $location) {
+    var urlVentas = "webresources/pol.una.py.wssc.ventas/";
+    var urlClientes = "webresources/pol.una.py.wssc.clientes/";
+    var urlProductos = "webresources/pol.una.py.wssc.productos/";
+    $http.get(urlClientes).success(function(response) {
+        $scope.clientes = response;
+    });
+    $http.get(urlProductos).success(function(response) {
+        $scope.productos = response;
+    });
+    $scope.cantidad = [];
+    $scope.agregados = [];
+    $scope.agregar = function(id, cant, index) {
+        if (parseInt($scope.productos[index].stock) >= parseInt(cant)) {
+            $scope.agregados.push(
+                    {
+                        'id': id,
+                        'cant': cant,
+                        'pos':index
+                    });
+            $scope.productos[index].stock = parseInt($scope.productos[index].stock) - parseInt(cant);
+        }
+    };
+    $scope.eliminar = function(index) {
+        console.log(index);
+        pos = $scope.agregados[index].pos;
+        $scope.productos[pos].stock =
+                parseInt($scope.productos[pos].stock)
+                +
+                parseInt($scope.agregados[index].cant);
+        $scope.agregados.splice(index, 1);
+
+    }
+
 });
