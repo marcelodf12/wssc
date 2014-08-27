@@ -9,16 +9,22 @@
                 <div class="form-group">
                     <label for="inputCliente" class="col-lg-2 control-label">Cliente</label>
                     <div class="col-lg-10">
-                        <input class="form-control" id="inputNombre" placeholder="Nombre" type="text">
+                        <input class="form-control" id="inputNombre" placeholder="Nombre" type="text" ng-model="nombreC">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-2 control-label">Seleccione un Cliente</label>
                     <div class="col-lg-10">
-                        <div class="radio">
+                        <div class="radio" ng-repeat="c in clientes | filter:nombreC">
                             <label>
-                                <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
-                                Cliente
+                                <input
+                                    name="optionsRadios"
+                                    id="optionsRadios1"
+                                    value="option1"
+                                    checked=""
+                                    type="radio"
+                                    >
+                                {{c.nombre}}
                             </label>
                         </div>
                     </div>
@@ -32,7 +38,7 @@
                       <div class="form-group">
                     <label for="inputProducto" class="col-lg-2 control-label">Producto</label>
                     <div class="col-lg-10">
-                        <input class="form-control" id="inputProducto" placeholder="Nombre" type="text">
+                        <input class="form-control" id="inputProducto" placeholder="Nombre" type="text" ng-model="nombreP">
                     </div>
                 </div>
     <table class="table table-striped table-hover ">
@@ -42,20 +48,23 @@
                             <th>Nombre</th>
                             <th>Stock</th>
                             <th>Cantidad</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>id</td>
-                            <td>Nombre</td>
-                            <td>Stock</td>
+                        <tr ng-repeat="p in productos | filter:nombreP">
+                            <td>{{p.id}}</td>
+                            <td>{{p.nombre}}</td>
+                            <td>{{p.stock}}</td>
                             <td>
-                                <input class="form-control" id="inputCantidad" placeholder="Cantidad" type="text">
+                                <input class="form-control" id="inputCantidad" placeholder="Cantidad" type="text" ng-model="cantidad[p.id]">
+                            </td>
+                            <td>
+                                <button type="reset" class="btn btn-default" ng-click="agregar(p.id,cantidad[p.id],$index);">Agregar</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-      <button type="reset" class="btn btn-default">Agregar</button>
   </div>
 </div>
         
@@ -68,17 +77,15 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Nombre</th>
                             <th>Cantidad</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>id</td>
-                            <td>Nombre</td>
-                            <td>Cantidad</td>
-                            <td><button type="reset" class="btn btn-danger">Eliminar</button></td>
+                        <tr ng-repeat="x in agregados">
+                            <td>{{x.id}}</td>
+                            <td>{{x.cant}}</td>
+                            <td><button type="reset" class="btn btn-danger" ng-click="eliminar($index)">Eliminar</button></td>
                         </tr>
                     </tbody>
                 </table>
