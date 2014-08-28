@@ -211,6 +211,7 @@ Wssc.controller('proveedorAsignarCtrl', function($scope, $http, $routeParams, $l
         console.log(proveedor);
         console.log($scope.productos[index]);
         $http.post("webresources/pol.una.py.wssc.proveedores/" + proveedor.id, $scope.productos[index]);
+        $location.path('/');
     };
 });
 Wssc.controller('proveedorEliminarCtrl', function($scope, $http, $routeParams, $location) {
@@ -236,7 +237,7 @@ Wssc.controller('proveedorEliminarCtrl', function($scope, $http, $routeParams, $
 Wssc.controller('productoAltaCtrl', function($scope, $http, $location) {
     $scope.alta = function() {
         var url = "webresources/pol.una.py.wssc.productos/";
-        newProducto = {nombre: $scope.nombre, descripcion: $scope.descripcion, precio: $scope.precio};
+        newProducto = {nombre: $scope.nombre, descripcion: $scope.descripcion, precio: $scope.precio, stock: 0};
         console.log(newProducto);
         $http.post(url, newProducto);
         $location.path('/producto/listar');
@@ -367,7 +368,7 @@ Wssc.controller('compraAltaCtrl', function($scope, $http, $location) {
                 }
             }
         });
-
+        $location.path('/');
     };
 });
 Wssc.controller('comprasListarCtrl', function($scope, $http) {
@@ -477,8 +478,8 @@ Wssc.controller('ventaAltaCtrl', function($scope, $http, $location) {
 
             });
         });
-    }
-    ;
+        $location.path('/');
+    };
 });
 Wssc.controller('ventaListarCtrl', function($scope, $http) {
     $http.get("webresources/pol.una.py.wssc.ventas/")
