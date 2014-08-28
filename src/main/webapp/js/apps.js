@@ -42,7 +42,10 @@ Wssc.config(['$routeProvider', function($routeProvider) {
                     templateUrl: 'proveedores/baja.html',
                     controller: 'proveedorEliminarCtrl'
                 })
-
+                .when('/proveedor/asignarProducto/:id', {
+                    templateUrl: 'proveedores/asignar.html',
+                    controller: 'proveedorAsignarCtrl'
+                })
 
 
                 .when('/producto/alta', {
@@ -74,6 +77,14 @@ Wssc.config(['$routeProvider', function($routeProvider) {
                 .when('/movimientos/ventas/registrar', {
                     templateUrl: 'movimientos/registrar_venta.html',
                     controller: 'ventaAltaCtrl'
+                })
+                .when('/movimientos/ventas/listar', {
+                    templateUrl: 'movimientos/listar_ventas.html',
+                    controller: 'ventaListarCtrl'
+                })
+                .when('/movimientos/pagos/listar', {
+                    templateUrl: 'movimientos/listar_pagos.html',
+                    controller: 'pagoListarCtrl'
                 })
 
 
@@ -179,6 +190,27 @@ Wssc.controller('proveedorEditarCtrl', function($scope, $http, $routeParams, $lo
         console.log(newProveedor);
         $http.put(url + id, newProveedor);
         $location.path('/');
+    };
+});
+Wssc.controller('proveedorAsignarCtrl', function($scope, $http, $routeParams, $location) {
+    var url = "webresources/pol.una.py.wssc.proveedores/";
+    var id = $routeParams.id.toString();
+    proveedor = {};
+    productos = [];
+    $http.get(url + id).success(function(response) {
+        proveedor = response;
+        $scope.nombre = proveedor.nombre;
+        $scope.ci = proveedor.ci;
+        $scope.email = proveedor.email;
+    });
+    $http.get("webresources/pol.una.py.wssc.productos/").success(function(response) {
+        $scope.productos = response;
+    });
+
+    $scope.asignar = function(index) {
+        console.log(proveedor);
+        console.log($scope.productos[index]);
+        $http.post("webresources/pol.una.py.wssc.proveedores/" + proveedor.id, $scope.productos[index]);
     };
 });
 Wssc.controller('proveedorEliminarCtrl', function($scope, $http, $routeParams, $location) {
@@ -447,4 +479,17 @@ Wssc.controller('ventaAltaCtrl', function($scope, $http, $location) {
         });
     }
     ;
+});
+Wssc.controller('ventaListarCtrl', function($scope, $http) {
+    $http.get("webresources/pol.una.py.wssc.ventas/")
+            .success(function(response) {
+                $scope.ventas = response;
+            });
+});
+
+Wssc.controller('pagoListarCtrl', function($scope, $http) {
+    $http.get("webresources/pol.una.py.wssc.pagos/")
+            .success(function(response) {
+                $scope.pagos = response;
+            });
 });

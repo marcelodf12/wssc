@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pol.una.py.wssc.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -20,6 +22,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import pol.una.py.wssc.Proveedores;
 import pol.una.py.wssc.Productos;
+
 /**
  *
  * @author marcelo
@@ -27,6 +30,7 @@ import pol.una.py.wssc.Productos;
 @Stateless
 @Path("pol.una.py.wssc.proveedores")
 public class ProveedoresFacadeREST extends AbstractFacade<Proveedores> {
+
     @PersistenceContext(unitName = "pol.una.py_WSSC_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -61,6 +65,34 @@ public class ProveedoresFacadeREST extends AbstractFacade<Proveedores> {
         return super.find(id);
     }
 
+    @POST
+    @Path("{id}")
+    @Produces({"application/xml", "application/json"})
+    public void agregarProductos(@PathParam("id") Integer id, Productos p) {
+
+        Proveedores proveedor = super.find(id);
+
+        em.persist(proveedor);
+        em.persist(p);
+        try {
+            proveedor.getProductosCollection().add(p);
+        } catch (NullPointerException e) {
+            Collection<Productos> c = (Collection<Productos>) new ArrayList<Productos>();
+            c.add(p);
+            proveedor.setProductosCollection(c);
+        }
+        try {
+            p.getProveedoresCollection().add(proveedor);
+        } catch (NullPointerException e) {
+            Collection<Proveedores> c = (Collection<Proveedores>) new ArrayList<Proveedores>();
+            c.add(proveedor);
+            p.setProveedoresCollection(c);
+        }
+
+        em.flush();
+        System.out.println("Persistido ");
+    }
+
     @GET
     @Override
     @Produces({"application/xml", "application/json"})
@@ -70,18 +102,18 @@ public class ProveedoresFacadeREST extends AbstractFacade<Proveedores> {
 
     @GET
     @Path("productos/{id}")
-    @Produces({"application/xml","application/json"})
+    @Produces({"application/xml", "application/json"})
     public List<Productos> buscarProductos(@PathParam("id") Integer id) {
         System.out.print(id);
         Proveedores p = super.find(id);
         List<Productos> productos = (List<Productos>) p.getProductosCollection();
-        for(Productos x : productos){
+        for (Productos x : productos) {
             System.out.print(x.getId());
             System.out.println(x.getNombre());
         }
         return productos;
     }
-    
+
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
@@ -100,5 +132,5 @@ public class ProveedoresFacadeREST extends AbstractFacade<Proveedores> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

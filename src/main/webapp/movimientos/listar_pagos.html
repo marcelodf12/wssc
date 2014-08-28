@@ -1,0 +1,27 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista de Pagos</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Venta</th>
+                    <th>Fecha</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <tr ng-repeat="p in pagos">
+                    <td>{{p.id}}</td>
+                    <td>{{p.fkVenta.id}}</td>
+                    <td>{{p.fecha}}</td>
+                    <td>{{p.monto}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

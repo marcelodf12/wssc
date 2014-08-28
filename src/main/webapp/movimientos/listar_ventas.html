@@ -1,0 +1,25 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Lista de Ventas</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <tr ng-repeat="p in ventas">
+                    <td>{{p.id}}</td>
+                    <td>{{p.fecha}}</td>
+                    <td>{{p.idCliente.nombre}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
