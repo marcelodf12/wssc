@@ -282,8 +282,8 @@ Wssc.controller('compraAltaCtrl', function($scope, $http, $location) {
                     cant_p = productos.length;
                     $http.get(url + $scope.proveedor).success(function(response) {
                         proveedor = response;
-                        console.log(proveedor);
                     });
+                    console.log(response);
                 });
     };
 
@@ -357,13 +357,16 @@ Wssc.controller('ventaAltaCtrl', function($scope, $http, $location) {
     });
     $scope.cantidad = [];
     $scope.agregados = [];
-    $scope.agregar = function(id, cant, index) {
+    aux = new Array();
+    $scope.agregar = function(id, cant, index, precio, p) {
         if (parseInt($scope.productos[index].stock) >= parseInt(cant)) {
             $scope.agregados.push(
                     {
                         'id': id,
                         'cant': cant,
-                        'pos':index
+                        'pos': index,
+                        'precio': precio,
+                        'producto': p
                     });
             $scope.productos[index].stock = parseInt($scope.productos[index].stock) - parseInt(cant);
         }
@@ -377,6 +380,71 @@ Wssc.controller('ventaAltaCtrl', function($scope, $http, $location) {
                 parseInt($scope.agregados[index].cant);
         $scope.agregados.splice(index, 1);
 
-    }
+    };
+    $scope.venta = function() {
+        var url = "webresources/pol.una.py.wssc.ventas/crear";
+        var urlDetalle = "webresources/pol.una.py.wssc.detalleventa/";
+        var urlProductos = "webresources/pol.una.py.wssc.productos/";
+        var urlPago = "webresources/pol.una.py.wssc.pagos/";
+        var cliente = $scope.idCliente.split(";");
+        var urlClientes = "webresources/pol.una.py.wssc.clientes/" + cliente[0];
+        $http.get(urlClientes).success(function(response) {
+            clienteObj = response;
+            var f = new Date();
+            var ano = f.getFullYear();
+            var mes = f.getMonth();
+            var dia = f.getDate();
+            var hoy = ano + "-" + mes + "-" + dia;
+            var venta = {
+                "fecha": hoy,
+                "idCliente": clienteObj
+            };
+            console.log(venta);
+            $http.post(url, venta).success(function(response) {
+                venta_respuesta = response;
+                cant_v = $scope.agregados.length;
+                console.log($scope.agregados);
+                console.log(cant_v);
+                monto = 0;
+                for (var i = 0; i < cant_v; i++) {
+                    precio = $scope.agregados[i].precio;
+                    cantidad = $scope.agregados[i].cant;
+                    monto += parseInt(cantidad) * parseInt(precio);
+                }
+                pago = {
+                    'fkVenta': venta_respuesta,
+                    'fecha': hoy,
+                    'monto': monto
+                };
+                aux = $scope.agregados;
+                $http.post(urlPago, pago);
+                console.log("Pago");
+                console.log(pago);
+                for (var i = 0; i < cant_v; i++) {
+                    cantidad = aux[i].cant;
+                    precio = aux[i].precio;
+                    nuevoProducto = aux[i].producto;
+                    console.log("Respuesta");
+                    console.log(response);
+                    nuevoDetalle = {
+                        'precio': precio,
+                        'fkProducto': nuevoProducto,
+                        'cantidad': cantidad,
+                        'fkVenta': venta_respuesta
+                    };
+                    console.log(urlDetalle);
+                    $http.post(urlDetalle, nuevoDetalle);
+                    console.log("Nuevo Detalle");
+                    console.log(nuevoDetalle);
+                    console.log("Producto Modificado");
+                    console.log(nuevoProducto);
+                    console.log(urlProductos + nuevoProducto.id);
+                    $http.put(urlProductos + nuevoProducto.id, nuevoProducto);
+                }
 
+
+            });
+        });
+    }
+    ;
 });

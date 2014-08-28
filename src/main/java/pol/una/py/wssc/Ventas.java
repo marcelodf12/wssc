@@ -20,9 +20,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,13 +42,13 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Ventas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @SequenceGenerator(name="seq_venta", sequenceName="seq_venta", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_venta")
     @Column(name = "id")
     private Integer id;
+    @Size(max = 2147483647)
     @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private String fecha;
     @OneToMany(mappedBy = "fkVenta")
     private Collection<Pagos> pagosCollection;
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")
@@ -70,11 +72,11 @@ public class Ventas implements Serializable {
         this.id = id;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 

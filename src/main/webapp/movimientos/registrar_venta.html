@@ -15,18 +15,9 @@
                 <div class="form-group">
                     <label class="col-lg-2 control-label">Seleccione un Cliente</label>
                     <div class="col-lg-10">
-                        <div class="radio" ng-repeat="c in clientes | filter:nombreC">
-                            <label>
-                                <input
-                                    name="optionsRadios"
-                                    id="optionsRadios1"
-                                    value="option1"
-                                    checked=""
-                                    type="radio"
-                                    >
-                                {{c.nombre}}
-                            </label>
-                        </div>
+                        <select ng-model="idCliente">
+                            <option ng-repeat="c in clientes | filter:nombreC">{{c.id}}; {{c.nombre}}</option>
+                        </select>
                     </div>
                 </div>
 
@@ -60,7 +51,7 @@
                                 <input class="form-control" id="inputCantidad" placeholder="Cantidad" type="text" ng-model="cantidad[p.id]">
                             </td>
                             <td>
-                                <button type="reset" class="btn btn-default" ng-click="agregar(p.id,cantidad[p.id],$index);">Agregar</button>
+                                <button type="reset" class="btn btn-default" ng-click="agregar(p.id,cantidad[p.id],$index,p.precio,p);">Agregar</button>
                             </td>
                         </tr>
                     </tbody>
@@ -97,7 +88,7 @@
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
                         <button type="reset" class="btn btn-default">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Registrar y Pagar</button>
+                        <button type="submit" class="btn btn-primary" ng-click="venta();">Registrar y Pagar</button>
                     </div>
                 </div>
             </fieldset>
